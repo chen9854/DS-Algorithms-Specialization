@@ -9,12 +9,19 @@ int gcd_naive(int a, int b) {
       }
     }
   }
-  return current_gcd;
+  return current_gcd;  
 }
 
+int gcd_euclidGCD(int a, int b) {
+  if(b == 0){
+    return a;
+  }
+  int aPrime = a % b;
+  return gcd_euclidGCD(b, aPrime);
+}
 int main() {
   int a, b;
   std::cin >> a >> b;
-  std::cout << gcd_naive(a, b) << std::endl;
+  std::cout << gcd_euclidGCD(a, b) << std::endl;
   return 0;
 }
