@@ -6,12 +6,31 @@
 
 using std::vector;
 using std::string;
-
+bool IsGreaterOrEqual(string digit, string maxDigit) {
+  if(std::stoi(digit+maxDigit) > std::stoi(maxDigit+digit)){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 string largest_number(vector<string> a) {
   //write your code here
   std::stringstream ret;
-  for (size_t i = 0; i < a.size(); i++) {
-    ret << a[i];
+  // for (size_t i = 0; i < a.size(); i++) {    
+  //   ret << a[i];
+  // }  
+  while(!a.empty()){
+    string maxDigit{'0'};
+    int idx = 0;
+    for(auto i = 0; i < a.size(); ++i){
+      if(IsGreaterOrEqual(a[i], maxDigit)){
+        maxDigit = a[i];
+        idx = i;
+      }   
+    }
+    ret << maxDigit;
+    a.erase(a.begin()+idx);         
   }
   string result;
   ret >> result;
