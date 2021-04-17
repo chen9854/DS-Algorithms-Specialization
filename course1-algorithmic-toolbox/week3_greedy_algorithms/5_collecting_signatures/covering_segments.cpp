@@ -19,30 +19,31 @@ vector<long long> optimal_points(vector<Segment> &segments) {
     for (size_t i = 0; i < segments.size(); ++i){
       for (int j = segments[i].start; j <= segments[i].end; ++j) {
         seg_map[j] += 1;
-      }      
+      }    
     }  
 
-    int s1 = -1;
+    long long s1 = -1;
     long long s2 = -1;
-    for(auto it = seg_map.begin(); it != seg_map.end(); it++){
+    for(auto it = seg_map.begin(); it != seg_map.end(); ++it){
       if(it->second >= s2){  
         s1 = it->first;      
         s2 = it->second;
       }
     }
-    points.push_back(s1);  
-    // for(int i = segments.size()-1; i >= 0; --i){
-      // if(s1 >= segments[i].start && s1 <= segments[i].end){
-        // segments.erase(segments.begin()+i);
-      // }
-    // }
-    for(auto it = segments.end()-1; it >= segments.begin(); --it){      
-      if (s1 >= it->start && s1 <= it->end){
-        segments.erase(it);
-      }
-    }    
-  }
 
+    points.push_back(s1);
+    auto it = segments.begin();
+    while(it != segments.end()){
+      if (s1 >= it->start && s1 <= it->end){
+        it = segments.erase(it);
+      }
+      else{
+        ++it;
+      }
+    }        
+
+  }
+  sort(points.begin(), points.end());
   return points;
 }
 
