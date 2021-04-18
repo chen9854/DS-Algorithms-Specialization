@@ -9,6 +9,10 @@ struct Segment {
   long long start, end;
 };
 
+bool compare_start(Segment& i, Segment& j)
+{
+  return (i.start <= j.start);
+}
 vector<long long> optimal_points(vector<Segment> &segments) {
 
   vector<long long> points;
@@ -16,6 +20,7 @@ vector<long long> optimal_points(vector<Segment> &segments) {
 
   while(!segments.empty()){
     std::map<long long, long long> seg_map;
+    std::sort(segments.begin(), segments.end(), compare_start);
     for (size_t i = 0; i < segments.size(); ++i){
       for (int j = segments[i].start; j <= segments[i].end; ++j) {
         seg_map[j] += 1;
