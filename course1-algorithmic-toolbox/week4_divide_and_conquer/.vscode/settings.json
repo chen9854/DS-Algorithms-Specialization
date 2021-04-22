@@ -2,6 +2,7 @@
     "files.associations": {
         "algorithm": "cpp",
         "iterator": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "utility": "cpp"
     }
 }
