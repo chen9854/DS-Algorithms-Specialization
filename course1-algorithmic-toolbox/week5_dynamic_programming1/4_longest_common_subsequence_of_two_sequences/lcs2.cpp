@@ -5,7 +5,19 @@ using std::vector;
 
 int lcs2(vector<int> &a, vector<int> &b) {
   //write your code here
-  return std::min(std::min(a.size(), b.size()), c.size());
+  int value[101][101]{0};
+  int na = a.size();
+  int nb = b.size();
+  for(int i = 1; i <= na; ++i){
+    for(int j = 1; j <= nb; ++j){
+      int val = value[i][j-1];
+      value[i][j] = val;
+      if(j<=i && a[i-1]==b[j-1]){
+        value[i][j] = std::max(val+1, value[i-1][j]);
+      }
+    }
+  }
+  return value[na][nb];
 }
 
 int main() {
