@@ -5,7 +5,22 @@ using std::vector;
 
 int lcs3(vector<int> &a, vector<int> &b, vector<int> &c) {
   //write your code here
-  return std::min(std::min(a.size(), b.size()), c.size());
+  int value[102][102][102]{0};
+  int na = a.size();
+  int nb = b.size();
+  int nc = c.size();
+  for(int i = 1; i <= na; ++i){
+    for(int j = 1; j <= nb; ++j){
+      for(int k = 1; k <= nc; ++k){
+        int val = std::max(value[i][j][k-1], std::max(value[i-1][j][k], value[i][j-1][k]));
+        value[i][j][k] = val;
+        if(a[i-1]==b[j-1] && b[j-1]==c[k-1]){
+          value[i][j][k] = value[i-1][j-1][k-1]+1;
+        }
+      }
+    }
+  }
+  return value[na][nb][nc];  
 }
 
 int main() {

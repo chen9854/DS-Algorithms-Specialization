@@ -13,12 +13,8 @@ int lcs2(vector<long long> &a, vector<long long> &b) {
       int val = std::max(value[i-1][j], value[i][j-1]);
       value[i][j] = val;
       if(a[i-1]==b[j-1]){
-        value[i][j] = std::max(val, value[i-1][j-1]+1);
+        value[i][j] = value[i-1][j-1] + 1;
       }
-      else{
-        value[i][j] = std::max(val, value[i-1][j-1]);
-      }
-
     }
   }
   return value[na][nb];
