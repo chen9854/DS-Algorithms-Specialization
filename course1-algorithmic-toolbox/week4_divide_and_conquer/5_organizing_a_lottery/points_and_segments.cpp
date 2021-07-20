@@ -6,7 +6,13 @@ using std::vector;
 vector<int> fast_count_segments(vector<int> starts, vector<int> ends, vector<int> points) {
   vector<int> cnt(points.size());
   //write your code here
-  return cnt;
+  if(starts.size() < 1 || ends.size() < 1){
+    return cnt;
+  }
+  while(points.size() > 1){
+
+  }
+  // return cnt;
 }
 
 vector<int> naive_count_segments(vector<int> starts, vector<int> ends, vector<int> points) {
