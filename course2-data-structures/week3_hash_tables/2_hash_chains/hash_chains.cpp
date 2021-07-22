@@ -2,10 +2,12 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <unordered_map>
 
 using std::string;
 using std::vector;
 using std::cin;
+using std::unordered_map;
 
 struct Query {
     string type, s;
@@ -15,7 +17,8 @@ struct Query {
 class QueryProcessor {
     int bucket_count;
     // store all strings in one vector
-    vector<string> elems;
+    // vector<string> elems;
+    unordered_map<unsigned long long, vector<string>> elems;
     size_t hash_func(const string& s) const {
         static const size_t multiplier = 263;
         static const size_t prime = 1000000007;
@@ -45,20 +48,48 @@ public:
     void processQuery(const Query& query) {
         if (query.type == "check") {
             // use reverse order, because we append strings to the end
-            for (int i = static_cast<int>(elems.size()) - 1; i >= 0; --i)
-                if (hash_func(elems[i]) == query.ind)
-                    std::cout << elems[i] << " ";
+            if (elems.find(query.ind) != elems.end()) {
+                int i = elems[query.ind].size() - 1;
+                string str = "";
+                while(i >= 0) {        
+                    str += elems[query.ind][i] + " ";
+                    i--;
+                }
+                str.erase(str.size() - 1);
+                std::cout << str << " ";                
+            } else {
+                std::cout << " ";
+            }
             std::cout << "\n";
         } else {
-            vector<string>::iterator it = std::find(elems.begin(), elems.end(), query.s);
-            if (query.type == "find")
-                writeSearchResult(it != elems.end());
-            else if (query.type == "add") {
-                if (it == elems.end())
-                    elems.push_back(query.s);
+            auto key = hash_func(query.s);
+            if (query.type == "find") {
+                if (elems.find(key) != elems.end()) {
+                    auto it = find(elems[key].begin(), elems[key].end(), query.s);
+                    if ( it != elems[key].end()) 
+                        writeSearchResult(true);
+                    else
+                        writeSearchResult(false);
+                } else {
+                    writeSearchResult(false);
+                }
+            } else if (query.type == "add") {
+                if (elems.find(key) == elems.end())
+                    elems[key].push_back(query.s);
+                else {
+                    if (find(elems[key].begin(), elems[key].end(), query.s) == elems[key].end()) {
+                        elems[key].push_back(query.s);
+                    }
+                }
+
             } else if (query.type == "del") {
-                if (it != elems.end())
-                    elems.erase(it);
+                if (elems.find(key) != elems.end()) {
+                    auto it = find(elems[key].begin(), elems[key].end(), query.s);
+                    if ( it != elems[key].end())
+                        elems[key].erase(it);
+                    if (elems[key].empty())
+                        elems.erase(key);
+                }
             }
         }
     }
