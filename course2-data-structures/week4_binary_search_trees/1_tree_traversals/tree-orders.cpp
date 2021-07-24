@@ -1,12 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <stack>
 #if defined(__unix__) || defined(__APPLE__)
 #include <sys/resource.h>
 #endif
 
 using std::vector;
 using std::ios_base;
+using std::stack;
 using std::cin;
 using std::cout;
 
@@ -32,7 +34,19 @@ public:
     vector<int> result;
     // Finish the implementation
     // You may need to add a new recursive method to do that
-
+    if (n < 1) return result;
+    stack<int> st;
+    int cur = 0;
+    while (cur > -1 || !st.empty()) {
+      while(cur > -1){
+        st.push(cur);
+        cur = left[cur];
+      }
+      cur = st.top();
+      st.pop();
+      result.push_back(key[cur]);
+      cur = right[cur];
+    }
     return result;
   }
 
@@ -40,7 +54,19 @@ public:
     vector<int> result;    
     // Finish the implementation
     // You may need to add a new recursive method to do that
-    
+    if (n < 1) return result;
+    stack<int> st;
+    int cur = 0;
+    st.push(0);
+    while (!st.empty()) {
+      cur = st.top();
+      st.pop();      
+      result.push_back(key[cur]);
+      if (right[cur] > -1)
+        st.push(right[cur]);      
+      if (left[cur] > -1)
+        st.push(left[cur]);
+    }
     return result;
   }
 
@@ -48,7 +74,27 @@ public:
     vector<int> result;
     // Finish the implementation
     // You may need to add a new recursive method to do that
-    
+    if (n < 1) return result;
+    stack<int> st;
+    int cur = 0;
+    while (cur > -1 || !st.empty()) {
+      while (cur > -1) {
+        if (right[cur] > -1) 
+          st.push(right[cur]);
+        st.push(cur);
+        cur = left[cur];
+      }
+      cur = st.top();
+      st.pop();
+      if (right[cur] > -1 && !st.empty() && st.top() == right[cur]) {
+        st.pop();
+        st.push(cur);
+        cur = right[cur];
+      } else {
+        result.push_back(key[cur]);
+        cur = -1;
+      } 
+    }
     return result;
   }
 };
