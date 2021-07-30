@@ -1,11 +1,45 @@
 #include <iostream>
 #include <vector>
-
+#include <stack>
 using std::vector;
 using std::pair;
+using std::stack;
+
+void dfs(vector<vector<int>> &adj, vector<bool>& visited, stack<int>& st, bool & res) {
+  int top = st.top();
+  int m = adj[top].size();
+  for (int i = 0; i < m; ++i) {
+    if (visited[adj[top][i]]) {
+      // std::cout<< adj[top][i] << std::endl;
+      res = true;
+      return;
+    } else {
+      st.push(adj[top][i]);
+      visited[adj[top][i]] = true;
+      dfs(adj, visited, st, res); 
+    }
+  }
+  visited[st.top()] = false;
+  st.pop();
+}
 
 int acyclic(vector<vector<int> > &adj) {
-  //write your code here
+  //write your code here 
+  bool res = false;
+  int n = adj.size();
+  
+  vector<bool> visited(n, false);
+  for (int i = 0; i < n; ++i) {
+    if (!visited[i]) {
+      stack<int> st;
+      st.push(i);
+      visited[i] = true;
+      dfs(adj, visited, st, res);
+      if (res) {
+        return 1;
+      }
+    }
+  }
   return 0;
 }
 

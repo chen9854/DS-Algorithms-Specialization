@@ -7,7 +7,21 @@ using std::queue;
 
 int distance(vector<vector<int> > &adj, int s, int t) {
   //write your code here
-  return -1;
+  vector<int> dist(adj.size(), -1);
+  queue<int> q;
+  q.push(s);
+  dist[s] = 0;
+  while (!q.empty()) {
+    int u = q.front();
+    q.pop();
+    for (int i = 0; i < adj[u].size(); ++i) {
+      if (dist[adj[u][i]] == -1) {
+        q.push(adj[u][i]);
+        dist[adj[u][i]] = dist[u] + 1;
+      }
+    }
+  }
+  return dist[t];
 }
 
 int main() {

@@ -4,10 +4,22 @@
 using std::vector;
 using std::pair;
 
+void explore(vector<vector<int> > &adj, vector<bool> &visited, int v) {
+  visited[v] = true;
+  for (int j = 0; j < adj[v].size(); ++j) {
+    if (!visited[adj[v][j]]) {
+      explore(adj, visited, adj[v][j]);
+    }
+  }
+}
 
 int reach(vector<vector<int> > &adj, int x, int y) {
   //write your code here
-  return 0;
+  const int n = adj.size();
+  vector<bool> visited = vector<bool>(n, false);
+  explore(adj, visited, x);
+
+  return visited[y];
 }
 
 int main() {

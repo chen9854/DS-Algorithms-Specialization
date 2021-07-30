@@ -7,12 +7,26 @@ using std::pair;
 
 void dfs(vector<vector<int> > &adj, vector<int> &used, vector<int> &order, int x) {
   //write your code here
+  int m = adj[x].size();
+  used[x] = 1;  
+  for (int i = 0; i < m; ++i) {
+    if (used[adj[x][i]] == 0) {      
+      dfs(adj, used, order, adj[x][i]);      
+    }
+  }
+  order.push_back(x); 
 }     
 
 vector<int> toposort(vector<vector<int> > adj) {
   vector<int> used(adj.size(), 0);
   vector<int> order;
   //write your code here
+  for (int i = 0; i < adj.size(); ++i) {
+    if (used[i] == 0) {
+      dfs(adj, used, order, i);
+    }
+  }
+  reverse(order.begin(), order.end());
   return order;
 }
 
